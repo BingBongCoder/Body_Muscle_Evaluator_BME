@@ -38,13 +38,11 @@ class MainActivity : AppCompatActivity() {
 
     // Optimasi Sinyal EMG (2500 Hz)
     private var updateCounter = 0
-    // 10 detik default = 10 * 2500 sampel = 25000f
     private var cameraLength = 25000f
-    // Buffer harus lebih besar dari camera agar bisa digeser (12 detik)
     private var maxBuffer = 30000
     private var isFullScreen = false
 
-    // HIDE SPIKE LOGIC: Diturunkan jadi 0.5 detik (500 ms) agar responsif
+    // HIDE SPIKE LOGIC
     private var mosfetOnTime: Long = 0
     private val SPIKE_IGNORE_DURATION = 500L
 
@@ -77,7 +75,6 @@ class MainActivity : AppCompatActivity() {
 
         val container = findViewById<FrameLayout>(R.id.fragment_container)
 
-        // Penyesuaian layout agar tidak tertutup status bar
         ViewCompat.setOnApplyWindowInsetsListener(container) { view, insets ->
             val statusBar = insets.getInsets(WindowInsetsCompat.Type.statusBars())
             view.setPadding(view.paddingLeft, statusBar.top, view.paddingRight, view.paddingBottom)
@@ -94,7 +91,6 @@ class MainActivity : AppCompatActivity() {
         container.addView(layoutPlot)
         container.addView(layoutSettings)
 
-        // Setup UI
         setupHomeUI()
         setupPlotUI()
         setupSettingsUI()
@@ -121,6 +117,11 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
+
+        // Memulai server secara otomatis di latar belakang untuk bersiaga
+        if (serverJob == null || serverJob?.isActive == false) {
+            startServer()
+        }
     }
 
     private fun showTab(tab: String) {
@@ -136,9 +137,7 @@ class MainActivity : AppCompatActivity() {
 
         val etCamera = layoutHome.findViewById<EditText>(R.id.etCameraLength)
 
-        // TOMBOL SET RENTANG (Y-AXIS)
         layoutHome.findViewById<Button>(R.id.btnSetRange)?.setOnClickListener {
-            // Menggunakan toIntOrNull() agar input selalu integer
             val minV = layoutHome.findViewById<EditText>(R.id.etMinPlot).text.toString().toIntOrNull() ?: 0
             val maxV = layoutHome.findViewById<EditText>(R.id.etMaxPlot).text.toString().toIntOrNull() ?: 3500
 
@@ -146,14 +145,11 @@ class MainActivity : AppCompatActivity() {
                 lineChart.axisLeft.axisMinimum = minV.toFloat()
                 lineChart.axisLeft.axisMaximum = maxV.toFloat()
                 lineChart.invalidate()
-
                 Toast.makeText(this, "Rentang magnitudo diubah: $minV - $maxV mV", Toast.LENGTH_SHORT).show()
             }
         }
 
-        // TOMBOL SET KAMERA (X-AXIS)
         layoutHome.findViewById<Button>(R.id.btnSetCamera)?.setOnClickListener {
-            // Menggunakan toIntOrNull() agar input selalu integer
             val newCamSeconds = etCamera?.text.toString().toIntOrNull()
 
             if (newCamSeconds != null && newCamSeconds > 0) {
@@ -172,21 +168,25 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // =========================================================
+        // PERUBAHAN LOGIKA TOMBOL CONNECT
+        // =========================================================
         btnStartServer.setOnClickListener {
-            if (serverJob == null || serverJob?.isActive == false) {
-                startServer()
-                btnStartServer.text = "Server Running..."
+            if (connectedClients.isNotEmpty()) {
+                btnStartServer.text = "BME Connected"
                 btnStartServer.isEnabled = false
+            } else {
+                Toast.makeText(this, "Belum ada BME yang terhubung dengan Hotspot HP", Toast.LENGTH_SHORT).show()
+                if (serverJob == null || serverJob?.isActive == false) {
+                    startServer()
+                }
             }
         }
 
-        // =========================================================
-        // PERBAIKAN LOGIKA UI WARNA LED HOME (RED, GREEN, BLUE)
-        // =========================================================
         val sliders = arrayOf(R.id.sbBrightness1, R.id.sbBrightness2, R.id.sbBrightness3)
         val texts = arrayOf(R.id.tvBrightness1, R.id.tvBrightness2, R.id.tvBrightness3)
         val colorLabels = arrayOf("LED Merah (R)", "LED Hijau (G)", "LED Biru (B)")
-        val pwmCommands = arrayOf("PWM1", "PWM2", "PWM3") // Jika secara hardware ternyata terbalik, cukup tukar PWM2 dan PWM3 di sini
+        val pwmCommands = arrayOf("PWM1", "PWM2", "PWM3")
 
         for (i in 0..2) {
             val sb = layoutHome.findViewById<SeekBar>(sliders[i])
@@ -349,8 +349,16 @@ class MainActivity : AppCompatActivity() {
                 val ss = ServerSocket(PORT)
                 withContext(Dispatchers.Main) { tvConsole.append("Server started...\n") }
                 while (isActive) {
-                    val client = ss.accept()
+                    val client = ss.accept() // Ini akan menunggu sampai ESP terhubung
                     connectedClients.add(client)
+
+                    // =========================================================
+                    // OTOMATIS MENGUBAH UI TOMBOL SAAT ESP BERHASIL MASUK
+                    // =========================================================
+                    withContext(Dispatchers.Main) {
+                        btnStartServer.text = "BME Connected"
+                        btnStartServer.isEnabled = false
+                    }
 
                     launch {
                         delay(500)
@@ -387,7 +395,20 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         } catch (e: Exception) {
-        } finally { connectedClients.remove(client); client.close() }
+        } finally {
+            connectedClients.remove(client)
+            client.close()
+
+            // =========================================================
+            // KEMBALIKAN TOMBOL JIKA KONEKSI TERPUTUS
+            // =========================================================
+            withContext(Dispatchers.Main) {
+                if (connectedClients.isEmpty()) {
+                    btnStartServer.text = "Connect to BME"
+                    btnStartServer.isEnabled = true
+                }
+            }
+        }
     }
 
     private fun updateChart(espId: Int, valueStr: String, rawLine: String) {
