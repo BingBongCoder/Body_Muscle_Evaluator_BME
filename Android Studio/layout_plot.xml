@@ -1,36 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="8dp"
-    android:background="#FFFFFF">
+    android:background="#121212"
+    android:padding="16dp">
 
     <LinearLayout
         android:id="@+id/llTopControls"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="24dp"
         android:gravity="center_vertical">
 
         <Switch
             android:id="@+id/swViewMode"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Mode Grafik "
+            android:layout_weight="1"
+            android:text="Mode Grafik"
+            android:textColor="#FFFFFF"
             android:checked="true"
+            android:thumbTint="#BB86FC"
+            android:trackTint="#757575"
             android:textStyle="bold"/>
 
-        <View android:layout_width="0dp" android:layout_height="0dp" android:layout_weight="1"/>
+        <Switch
+            android:id="@+id/swRectifyMode"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:checked="false"
+            android:text="EMG Mentah"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:thumbTint="#03DAC6"
+            android:trackTint="#757575" />
 
         <Button
             android:id="@+id/btnFullScreen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="[ ] FULL SCREEN"
-            android:textColor="#FFFFFF"
-            android:textSize="10sp"
-            android:backgroundTint="#002333"/>
+            android:layout_marginStart="8dp"
+            android:backgroundTint="#BB86FC"
+            android:text="Full Screen"
+            android:textColor="#000000"
+            android:textSize="11sp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp" />
     </LinearLayout>
 
     <RadioGroup
@@ -40,21 +58,63 @@
         android:layout_below="@id/llTopControls"
         android:orientation="horizontal"
         android:gravity="center"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp">
-        <RadioButton android:id="@+id/rbEsp1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="ESP 1" android:buttonTint="#FF0000"/>
-        <RadioButton android:id="@+id/rbEsp2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="ESP 2" android:buttonTint="#0000FF"/>
-        <RadioButton android:id="@+id/rbBoth" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Keduanya" android:checked="true"/>
+        <RadioButton android:id="@+id/rbEsp1" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginEnd="16dp" android:text="BME 1" android:textColor="#FFFFFF" android:buttonTint="#FF5252"/>
+        <RadioButton android:id="@+id/rbEsp2" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginEnd="16dp" android:text="BME 2" android:textColor="#FFFFFF" android:buttonTint="#448AFF"/>
+        <RadioButton android:id="@+id/rbBoth" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Keduanya" android:textColor="#FFFFFF" android:checked="true" android:buttonTint="#03DAC6"/>
     </RadioGroup>
 
     <RelativeLayout
         android:id="@+id/rlChartContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/rgPlotSelect">
+        android:layout_below="@id/rgPlotSelect"
+        android:background="#1E1E1E"
+        android:padding="4dp">
+
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/lineChart"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvEstimasiBeban"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:visibility="gone"
+            app:cardBackgroundColor="#D9000000"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="12dp"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Estimasi Beban : "
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvEstimasiBeban"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0.0 Kg"
+                    android:textColor="#00E676"
+                    android:textStyle="bold"
+                    android:textSize="18sp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
     </RelativeLayout>
 
     <ScrollView
@@ -63,14 +123,18 @@
         android:layout_height="match_parent"
         android:layout_below="@id/rgPlotSelect"
         android:visibility="gone"
-        android:background="#1E1E1E">
+        android:background="#1E1E1E"
+        android:fillViewport="true">
+
         <TextView
             android:id="@+id/tvConsole"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#00FF00"
-            android:padding="8dp"
+            android:textColor="#00E676"
+            android:padding="16dp"
             android:textSize="12sp"
+            android:text="Menunggu data..."
             android:fontFamily="monospace"/>
     </ScrollView>
+
 </RelativeLayout>
