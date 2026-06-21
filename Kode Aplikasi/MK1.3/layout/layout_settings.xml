@@ -12,17 +12,118 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <Button
-            android:id="@+id/btnStartServer"
+        <Spinner
+            android:id="@+id/spnEspSelect"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="54dp"
+            android:layout_marginBottom="24dp"
+            android:background="@android:drawable/btn_dropdown"
+            android:backgroundTint="#1E1E1E"
+            android:padding="8dp" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:backgroundTint="#BB86FC"
-            android:text="Connect to BME"
-            android:textColor="#000000"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:cornerRadius="12dp" />
+            app:cardCornerRadius="12dp"
+            app:cardBackgroundColor="#1E1E1E"
+            app:cardElevation="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:text="Warna Mencari Host (Blinking)"
+                    android:textColor="#E0E0E0"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvSrchR"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Red"
+                    android:textColor="#B0B0B0" />
+
+                <SeekBar
+                    android:id="@+id/sbSrchR"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:max="255"
+                    android:progressTint="#FF8A80"
+                    android:thumbTint="#FF8A80" />
+
+                <TextView
+                    android:id="@+id/tvSrchG"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Green"
+                    android:textColor="#B0B0B0" />
+
+                <SeekBar
+                    android:id="@+id/sbSrchG"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:max="255"
+                    android:progressTint="#B9F6CA"
+                    android:thumbTint="#B9F6CA" />
+
+                <TextView
+                    android:id="@+id/tvSrchB"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Blue"
+                    android:textColor="#B0B0B0" />
+
+                <SeekBar
+                    android:id="@+id/sbSrchB"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="255"
+                    android:progressTint="#82B1FF"
+                    android:thumbTint="#82B1FF" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="12dp"
+            app:cardBackgroundColor="#1E1E1E"
+            app:cardElevation="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:text="Warna Terkoneksi (Solid)"
+                    android:textColor="#E0E0E0"
+                    android:textStyle="bold" />
+
+                <TextView android:id="@+id/tvConnR" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Red" android:textColor="#B0B0B0" />
+                <SeekBar android:id="@+id/sbConnR" android:layout_width="match_parent" android:layout_height="wrap_content" android:max="255" android:progressTint="#FF8A80" android:thumbTint="#FF8A80" android:layout_marginBottom="8dp"/>
+
+                <TextView android:id="@+id/tvConnG" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Green" android:textColor="#B0B0B0" />
+                <SeekBar android:id="@+id/sbConnG" android:layout_width="match_parent" android:layout_height="wrap_content" android:max="255" android:progressTint="#B9F6CA" android:thumbTint="#B9F6CA" android:layout_marginBottom="8dp"/>
+
+                <TextView android:id="@+id/tvConnB" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Blue" android:textColor="#B0B0B0" />
+                <SeekBar android:id="@+id/sbConnB" android:layout_width="match_parent" android:layout_height="wrap_content" android:max="255" android:progressTint="#82B1FF" android:thumbTint="#82B1FF" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -36,125 +137,30 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:gravity="center_vertical"
                 android:padding="16dp">
 
                 <TextView
-                    android:id="@+id/tvBattery1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="Bat 1: Menunggu..."
-                    android:textColor="#FF8A80"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvBattery2"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="Bat 2: Menunggu..."
-                    android:textColor="#82B1FF"
-                    android:textStyle="bold" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="Rentang Sumbu Y Grafik (mV)"
-            android:textColor="#E0E0E0"
-            android:textStyle="bold" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="16dp">
-
-            <EditText
-                android:id="@+id/etMinPlot"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="Min"
-                android:textColorHint="#757575"
-                android:textColor="#FFFFFF"
-                android:inputType="numberDecimal" />
-
-            <EditText
-                android:id="@+id/etMaxPlot"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="Max"
-                android:textColorHint="#757575"
-                android:textColor="#FFFFFF"
-                android:inputType="numberDecimal" />
-
-            <Button
-                android:id="@+id/btnSetRange"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#BB86FC"
-                android:textColor="#000000"
-                android:text="SET Y" />
-        </LinearLayout>
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="12dp"
-            app:cardBackgroundColor="#1E1E1E"
-            app:cardElevation="2dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:text="Rentang Sumbu X Grafik (detik)"
+                    android:text="Analisis Kelelahan Otot"
                     android:textColor="#E0E0E0"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <Switch
+                    android:id="@+id/swFatigueMode"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <EditText
-                        android:id="@+id/etCameraLength"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:hint="Default: 10 detik"
-                        android:textColorHint="#757575"
-                        android:textColor="#FFFFFF"
-                        android:inputType="number" />
-
-                    <Button
-                        android:id="@+id/btnSetCamera"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="#BB86FC"
-                        android:textColor="#000000"
-                        android:text="SET KAMERA" />
-                </LinearLayout>
+                    android:theme="@style/ThemeOverlay.AppCompat.Dark" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="24dp"
             app:cardCornerRadius="12dp"
             app:cardBackgroundColor="#1E1E1E"
             app:cardElevation="2dp">
@@ -162,17 +168,24 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
                 android:padding="16dp">
 
-                <TextView android:id="@+id/tvBrightness1" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="LED Merah (R): 0" android:textColor="#FFFFFF" android:textStyle="bold" />
-                <SeekBar android:id="@+id/sbBrightness1" android:layout_width="match_parent" android:layout_height="wrap_content" android:max="255" android:progressTint="#FF8A80" android:thumbTint="#FF8A80" android:layout_marginBottom="12dp"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Analisis Beban yang Diangkat Otot"
+                    android:textColor="#E0E0E0"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
-                <TextView android:id="@+id/tvBrightness2" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="LED Hijau (G): 0" android:textColor="#FFFFFF" android:textStyle="bold" />
-                <SeekBar android:id="@+id/sbBrightness2" android:layout_width="match_parent" android:layout_height="wrap_content" android:max="255" android:progressTint="#B9F6CA" android:thumbTint="#B9F6CA" android:layout_marginBottom="12dp"/>
-
-                <TextView android:id="@+id/tvBrightness3" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="LED Biru (B): 0" android:textColor="#FFFFFF" android:textStyle="bold" />
-                <SeekBar android:id="@+id/sbBrightness3" android:layout_width="match_parent" android:layout_height="wrap_content" android:max="255" android:progressTint="#82B1FF" android:thumbTint="#82B1FF" />
+                <Switch
+                    android:id="@+id/swLoadEstimation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/ThemeOverlay.AppCompat.Dark" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
